@@ -1,44 +1,56 @@
-#include <stdio.h>
-#include <stdlib.h>
+void NivelesNodo() {
+    typedef struct Node {
+        int key;
+        struct Node *left, *right;
+    } Node;
 
-typedef struct Node {
-    int key;
-    struct Node *left, *right;
-} Node;
+    Node* newNode(int key) {
+        Node* node = (Node*)malloc(sizeof(Node));
+        node->key = key;
+        node->left = node->right = NULL;
+        return node;
+    }
 
-Node* newNode(int key) {
-    Node* node = (Node*)malloc(sizeof(Node));
-    node->key = key;
-    node->left = node->right = NULL;
-    return node;
-}
+    int keys[] = {80, 70, 100, 50, 71, 90, 101, 40, 73, 110};
+    int size = sizeof(keys) / sizeof(keys[0]);
 
-Node* insert(Node* root, int key) {
-    if (root == NULL)
-        return newNode(key);
+    Node* root = NULL;
 
-    if (key < root->key)
-        root->left = insert(root->left, key);
-    else if (key > root->key)
-        root->right = insert(root->right, key);
+    for (int i = 0; i < size; ++i) {
+        int key = keys[i];
 
-    return root;
-}
+        if (root == NULL)
+            root = newNode(key);
+        else {
+            Node* current = root;
+            Node* parent = NULL;
 
-void printLevelCount(Node* root) {
+            while (current != NULL) {
+                parent = current;
+                if (key < current->key)
+                    current = current->left;
+                else
+                    current = current->right;
+            }
+
+            if (key < parent->key)
+                parent->left = newNode(key);
+            else
+                parent->right = newNode(key);
+        }
+    }
+
     if (root == NULL) return;
 
     Node* temp;
     int level = 0;
     int count = 0;
 
-    
-    Node* queue[1000]; 
+    Node* queue[1000];
     int front = 0, rear = 0;
 
-   
     queue[rear++] = root;
-    queue[rear++] = NULL; 
+    queue[rear++] = NULL;
 
     printf("Nodos por nivel:\n");
 
@@ -49,24 +61,11 @@ void printLevelCount(Node* root) {
             printf("Nivel %d: %d nodos\n", level, count);
             count = 0;
             level++;
-            if (front < rear) queue[rear++] = NULL; 
+            if (front < rear) queue[rear++] = NULL;
         } else {
             count++;
             if (temp->left) queue[rear++] = temp->left;
             if (temp->right) queue[rear++] = temp->right;
         }
     }
-}
-
-int main() {
-    Node* root = NULL;
-
-    int keys[] = {80, 70, 100, 50, 71, 90, 101, 40, 73, 110 };
-
-    for (int i = 0; i < sizeof(keys) / sizeof(keys[0]); ++i)
-        root = insert(root, keys[i]);
-
-    printLevelCount(root);
-
-    return 0;
 }
