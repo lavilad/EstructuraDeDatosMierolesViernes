@@ -1,10 +1,10 @@
-bool vacio(Node* root){
+bool vacio(Node* root) {
     return root == NULL;
 }
-int main(){
-    if (vacio(root)) {
-        printf("El arbol esta vacio.\n");
-    } else {
-        printf("El arbol no esta vacio.\n");
+void VerificarVacio(Node* root){
+    if (vacio(root)){
+        printf("El arbol esta vacio");
+    }else{
+        printf("El arbol no esta vacio");
     }
 }
