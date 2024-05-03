@@ -1,0 +1,72 @@
+//Librerias a usar
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+
+//Declaración de los valores
+struct TreeNode 
+{
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+//Estructura del árbol binario
+struct TreeNode* newNode(int val) 
+{
+    struct TreeNode* node=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val=val;
+    node->left=NULL;
+    node->right=NULL;
+    return node;
+}
+
+//Función declarar si el árbol es correcto o no
+bool isBSTUtil(struct TreeNode* node, int min, int max) 
+{
+    if(node==NULL)
+       return true;
+    
+    if(node->val <= min || node->val >= max)
+       return false;
+
+    return isBSTUtil(node->left, min, node->val) &&
+           isBSTUtil(node->right, node->val, max);
+}
+
+bool isBST(struct TreeNode* root) 
+{
+    return isBSTUtil(root, INT_MIN, INT_MAX);
+}
+
+//Función para liberar el árbol binario
+void freeTree(struct TreeNode* root) {
+    if(root==NULL)
+       return;
+    freeTree(root->left);
+    freeTree(root->right);
+    free(root);
+}
+
+//Valores que mandan llamar a las funciones
+int main() 
+{
+    struct TreeNode* root=newNode(5);
+    root->left=newNode(3);
+    root->right=newNode(7);
+    root->left->left=newNode(2);
+    root->left->right=newNode(4);
+    root->right->left=newNode(6);
+    root->right->right=newNode(8);
+
+//Verificación y texto a mostrar
+    if(isBST(root))
+       printf("El árbol es correcto.\n");
+    else
+       printf("El árbol no es correcto.\n");
+
+    freeTree(root);
+
+    return 0;
+}
