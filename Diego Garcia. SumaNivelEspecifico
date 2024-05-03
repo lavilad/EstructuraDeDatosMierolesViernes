@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definicion de la estructura de un nodo del arbol
+typedef struct Node {
+    int key;
+    struct Node *left, *right;
+} Node;
+
+// Funcion para crear un nuevo nodo
+Node *newNode(int key) {
+    Node *node = (Node *)malloc(sizeof(Node));
+    node->key = key;
+    node->left = node->right = NULL;
+    return node;
+}
+
+// Funcion para insertar un nuevo nodo en el arbol
+Node *insert(Node *root, int key) {
+    // Si el arbol esta vacio
+    if (root == NULL)
+        return newNode(key);
+
+    // Si la clave es menor que la clave del nodo actual
+    if (key < root->key)
+        root->left = insert(root->left, key);
+    // Si la clave es mayor que la clave del nodo actual
+    else if (key > root->key)
+        root->right = insert(root->right, key);
+
+    // Cuando el nodo ya existe
+    return root;
+}
+
+// Funcion para imprimir un arbol en orden
+void inorder(Node *root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->key);
+        inorder(root->right);
+    }
+}
+
+// Funcion para imprimir un arbol en orden posterior
+void postorder(Node *root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->key);
+    }
+}
+
+// Funcion para encontrar la suma de los nodos en un nivel dado
+int sumOfNodesAtLevel(Node *root, int level) {
+    if (root == NULL)
+        return 0;
+    if (level == 1)
+        return root->key;
+    return sumOfNodesAtLevel(root->left, level - 1) + sumOfNodesAtLevel(root->right, level - 1);
+}
+
+// Funcion para solicitar un nivel al usuario y calcular la suma de los nodos en ese nivel
+void calculateAndPrintSumAtLevel(Node *root) {
+    // Solicitar al usuario un nivel
+    int level;
+    printf("Ingrese el nivel del arbol para calcular la suma: ");
+    scanf("%d", &level);
+
+    // Calcular la suma de los nodos en el nivel dado
+    int sum = sumOfNodesAtLevel(root, level);
+    printf("La suma de los nodos en el nivel %d es: %d\n", level, sum);
+}
+
+int main() {
+    Node *root = NULL;
+    int keys[] = {110, 80, 101, 100, 90, 40, 50, 70, 71, 73};
+
+    // Insertar las claves en el arbol
+    for (int i = 0; i < sizeof(keys) / sizeof(keys[0]); ++i)
+        root = insert(root, keys[i]);
+
+    // Imprimir el arbol en orden
+    printf("Arbol en orden: ");
+    inorder(root);
+    printf("\n");
+
+    // Calcular y mostrar la suma de los nodos en un nivel dado
+    calculateAndPrintSumAtLevel(root);
+
+    return 0;
+}
