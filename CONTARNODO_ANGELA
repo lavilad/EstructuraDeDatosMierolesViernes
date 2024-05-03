@@ -1,59 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
+ int contarNodos(Node* nodo) {
+     if (nodo == NULL)
+         return 0;
+     else
+         return 1 + contarNodos(nodo->left) + contarNodos(nodo->right);
+ }
 
-
-struct NodoArbol {
-    int dato;
-    struct NodoArbol *left;
-    struct NodoArbol *right;
-};
-
-struct NodoArbol* crearNodo(int dato) {
-    struct NodoArbol* nodo = (struct NodoArbol*)malloc(sizeof(struct NodoArbol));
-    nodo->dato = dato;
-    nodo->left = NULL;
-    nodo->right = NULL;
-    return nodo;
-}
-
-struct NodoArbol* insert(struct NodoArbol* nodo, int dato) {
-    if (nodo == NULL) 
-        return crearNodo(dato);
-
-    if (dato < nodo->dato)
-        nodo->left = insert(nodo->left, dato);
-    else if (dato > nodo->dato)
-        nodo->right = insert(nodo->right, dato);
-
-    return nodo;
-}
-
-int contarNodos(struct NodoArbol* nodo) {
-    if (nodo == NULL)
-        return 0;
-    else
-        return 1 + contarNodos(nodo->left) + contarNodos(nodo->right);
-}
-
-int main() {
-  
-    struct NodoArbol* arbol = NULL;
-    arbol = insert(arbol, 80);
-    insert(arbol, 70);
-    insert(arbol, 100);
-    insert(arbol, 50);
-    insert(arbol, 71);
-    insert(arbol, 90);
-    insert(arbol, 101);
-    insert(arbol, 40);
-    insert(arbol, 73);
-    insert(arbol, 110);
- 
-  int numNodos = contarNodos(arbol);
-  if (numNodos == 1)
+//int numNodos = contarNodos(arbol);
       printf("El árbol solo tiene raíz.\n");
-  else
-      printf("El árbol tiene %d nodos.\n", numNodos);
 
-  return 0;
-}
