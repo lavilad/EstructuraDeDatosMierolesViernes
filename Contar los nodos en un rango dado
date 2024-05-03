@@ -1,0 +1,32 @@
+void printLevelCount(Node* root) {
+    if (root == NULL) return;
+
+    Node* temp;
+    int level = 0;
+    int count = 0;
+
+    
+    Node* queue[1000]; 
+    int front = 0, rear = 0;
+
+   
+    queue[rear++] = root;
+    queue[rear++] = NULL; 
+
+    printf("Nodos por nivel:\n");
+
+    while (front < rear) {
+        temp = queue[front++];
+
+        if (temp == NULL) {
+            printf("Nivel %d: %d nodos\n", level, count);
+            count = 0;
+            level++;
+            if (front < rear) queue[rear++] = NULL; 
+        } else {
+            count++;
+            if (temp->left) queue[rear++] = temp->left;
+            if (temp->right) queue[rear++] = temp->right;
+        }
+    }
+}
