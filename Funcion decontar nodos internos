@@ -1,0 +1,18 @@
+//Conteo de nodos internos
+int countInternalNodes(struct Node* node) {
+  //los primeros IF es solo para revisar que el nodo este vacio y devulve 0 despues el
+  //El segundo IF lo que realiza es solo checar ahora es los left y righ si estan vacios 
+  //Si es asi devuelve 0, Si el nodo actual no es una hoja, la función incrementa el recuento en 1 
+  //y recursivamente cuenta el número de nodos internos en los subárboles izquierdo y derecho. El 
+  //recuento se incrementa en 1 porque el nodo actual es un nodo interno. La función continúa contando 
+  //recursivamente el número de nodos internos en los subárboles izquierdo y derecho hasta que haya visitado 
+  //todos los nodos en el árbol.
+  
+    if (node == NULL)
+        return 0;
+
+    if (node->left == NULL && node->right == NULL)
+        return 0;
+
+    return 1 + countInternalNodes(node->left) + countInternalNodes(node->right);
+}
