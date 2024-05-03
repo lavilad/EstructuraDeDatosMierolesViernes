@@ -4,15 +4,15 @@
 
 struct NodoArbol {
     int dato;
-    struct NodoArbol *izquierda;
-    struct NodoArbol *derecha;
+    struct NodoArbol *left;
+    struct NodoArbol *right;
 };
 
 struct NodoArbol* crearNodo(int dato) {
     struct NodoArbol* nodo = (struct NodoArbol*)malloc(sizeof(struct NodoArbol));
     nodo->dato = dato;
-    nodo->izquierda = NULL;
-    nodo->derecha = NULL;
+    nodo->left = NULL;
+    nodo->right = NULL;
     return nodo;
 }
 
@@ -21,9 +21,9 @@ struct NodoArbol* insert(struct NodoArbol* nodo, int dato) {
         return crearNodo(dato);
 
     if (dato < nodo->dato)
-        nodo->izquierda = insert(nodo->izquierda, dato);
+        nodo->left = insert(nodo->left, dato);
     else if (dato > nodo->dato)
-        nodo->derecha = insert(nodo->derecha, dato);
+        nodo->right = insert(nodo->right, dato);
 
     return nodo;
 }
@@ -32,7 +32,7 @@ int contarNodos(struct NodoArbol* nodo) {
     if (nodo == NULL)
         return 0;
     else
-        return 1 + contarNodos(nodo->izquierda) + contarNodos(nodo->derecha);
+        return 1 + contarNodos(nodo->left) + contarNodos(nodo->right);
 }
 
 int main() {
