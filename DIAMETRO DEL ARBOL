@@ -1,0 +1,163 @@
+/******************************************************************************
+
+Welcome to GDB Online. DIEGO LOZANO 
+  GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
+  C#, OCaml, VB, Perl, Swift, Prolog, Javascript, Pascal, COBOL, HTML, CSS, JS
+  Code, Compile, Run and Debug online from anywhere in world.
+
+*******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct Node {
+    int key;
+    struct Node *left, *right;
+} Node;
+
+Node* newNode(int key) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->key = key;
+    node->left = node->right = NULL;
+    return node;
+}
+
+Node* insert(Node* root, int key) {
+    if (root == NULL) {
+        return newNode(key);
+    }
+    if (key < root->key) {
+        root->left = insert(root->left, key);
+    }
+    else if (key > root->key) {
+        root->right = insert(root->right, key);
+    }
+    return root;
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+
+int height(Node* node) {
+    if (node == NULL)
+        return 0;
+    else
+        return 1 + max(height(node->left), height(node->right));
+}
+
+
+int diameter(Node* tree) {
+    if (tree == NULL)
+        return 0;
+
+
+    int lHeight = height(tree->left);
+    int rHeight = height(tree->right);
+
+    int lDiameter = diameter(tree->left);
+    int rDiameter = diameter(tree->right);
+
+    return max(lHeight + rHeight + 1, max(lDiameter, rDiameter));
+}
+
+void inorder(Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->key);
+        inorder(root->right);
+    }
+}
+
+void postorder(Node* root){
+    if (root != NULL){
+        postorder(root->right);
+        postorder(root->left);
+        printf("%d ", root->key);
+    }
+}
+
+
+Node* minValueNode(Node* node){
+    Node* current = node;
+   
+   
+   
+    while (current && current->left !=NULL)
+    current = current->left;
+   
+   
+    while (current && current->right !=NULL)
+    current = current->right;
+   
+   
+    return current;
+}
+
+Node* deleteNode(Node* root, int key) {
+   
+
+    if (root == NULL) return root;
+   
+    
+    if (key < root->key)
+        root->left = deleteNode(root->left, key);
+   
+    else if (key > root->key)
+        root->right = deleteNode(root->right, key);
+  
+    else {
+    
+        if (root->left == NULL) {
+            Node* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+       
+        Node* temp = minValueNode(root->right);
+        root->key = temp->key;
+        root->right = deleteNode(root->right, temp->key);
+    }
+    return root;
+}
+
+int main() {
+    Node* root = NULL;
+    root = insert(root, 80);
+    insert(root, 70);
+    insert(root, 40);
+    insert(root, 100);
+    insert(root, 101);
+    insert(root, 110);
+    insert(root, 71);
+    insert(root, 73);
+    insert(root, 90);
+   
+    printf("Árbol en orden: ");
+    inorder(root);
+    printf("\n");
+   
+    deleteNode(root, 90);
+    deleteNode(root,70);
+    deleteNode(root,100);
+   
+    printf("Árbol en orden después de eliminar nodos: ");
+    inorder(root);
+    printf("\n");
+   
+    insert(root, 119);
+   
+    printf("Árbol en postorder después de insertar 119: ");
+    postorder(root);
+    printf("\n");
+   
+    int treeDiameter = diameter(root);
+    printf("El diámetro del árbol es: %d\n", treeDiameter);
+    
+    return 0;
+}
