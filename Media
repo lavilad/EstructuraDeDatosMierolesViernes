@@ -1,0 +1,14 @@
+// Función para calcular la media de los valores de los nodos del árbol
+void fmedia(Node* root, int *suma, int *contador) {
+    if (root != NULL) {
+        fmedia(root->right, suma, contador);
+        fmedia(root->left, suma, contador);
+        printf(" %d", root->key);
+        *suma += root->key;
+        (*contador)++;
+    }
+
+//llamar a la funcion(poner las 3 lineas)
+    int suma = 0;
+    int contador = 0;
+    fmedia(root, &suma, &contador);
