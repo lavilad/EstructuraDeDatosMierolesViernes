@@ -1,0 +1,39 @@
+int calculateWidth(Node* root) {  // función para calcular el ancho del árbol binario
+    if (root == NULL) return 0;   // si la raíz es NULL, el ancho es 0
+
+    int maxWidth = 0;   // inicializar el ancho máximo a 0
+    int currWidth = 0; // inicializar el ancho actual a 0
+
+    Node* queue[100]; // cree una cola de tamaño 100 
+    int front = 0, rear = 0;  // inicializar los índices delantero y trasero de la cola
+
+    queue[rear++] = root;   // agregar el nodo raíz a la cola
+
+    while (front < rear) {  // mientras la cola no esté vacía
+        currWidth = rear - front;  // calcular el ancho actual como la diferencia entre la parte trasera y la delantera
+        maxWidth = (maxWidth > currWidth)? maxWidth : currWidth;  // actualice el ancho máximo si es necesario
+
+        while (currWidth--) {  // para cada nodo en el nivel actual
+            Node* node = queue[front++];  // sacar el nodo delantero de la cola
+            if (node->left) queue[rear++] = node->left;  // si el hijo izquierdo existe, póngalo en cola
+            if (node->right) queue[rear++] = node->right;  // si el hijo derecho existe, póngalo en cola
+        }
+    }
+
+    return maxWidth;  // devolver el ancho máximo
+}
+
+int main() {
+    Node* root = createNode(119);  // crear el nodo raíz con datos 119
+    root->left = createNode(110);  // crear el hijo izquierdo del nodo de raiz con datos 110
+    root->right = createNode(101); // crear el hijo derecho del nodo de raiz con datos 101 
+    root->left->left = createNode(80);  // crear el hijo izquierdo del hijo izquierdo del nodo de raiz con datos 80
+    root->left->right = createNode(73); // crear el hijo derecho del hijo izquierdo del nodo de raiz con datos 73
+    root->right->left = createNode(71); // crear el hijo izquierdo del hijo derecho del nodo de raiz con datos 71
+    root->right->right = createNode(50); // crear el hijo derecho del hijo derecho del nodo de raiz con datos 50
+    root->left->left->right = createNode(40);  // crear el hijo derecho del hijo izquierdo del hijo izquierdo del nodo raíz con datos 40
+
+    int width = calculateWidth(root);  // calcular el ancho del árbol binario
+    printf("Ancho del árbol binario: %d\n", width);  
+
+    return 0;
