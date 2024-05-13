@@ -6,5 +6,5 @@
  }
 
 //int numNodos = contarNodos(arbol);
-      printf("El árbol solo tiene raíz.\n");
+      
 
